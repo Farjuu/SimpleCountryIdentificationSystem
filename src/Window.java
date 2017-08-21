@@ -13,13 +13,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
 import jpl.Query;
-import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -42,13 +42,10 @@ public class Window {
 	private String string_query = "";
 	private LetterSelectionHelper letterSelectionHelper;
 	private JPanel query_making_bckg;
-
 	private JButton btnExecute;
 	private JButton btnreset;
-
-	private final String filepath = "consult('" + System.getProperty("user.dir")
-			+ "\\resource\\Identify_countries.pl')";
-	private boolean isConnected = new Query(filepath.replaceAll("\\\\", "/")).hasSolution();
+	private String filepath;
+	private boolean isConnected;
 	private Color whtColor = Color.decode("#ffffff");
 	private int xm, ym;
 	private int slider_op_counter = 1;
@@ -89,6 +86,34 @@ public class Window {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+
+		// resource
+
+		URL url = this.getClass().getResource("resource/");
+
+		File dir;
+		File p_file = null;
+
+		try {
+			dir = new File(url.toURI());
+
+			for (File f : dir.listFiles()) {
+				p_file = f;
+			}
+
+		} catch (
+
+		URISyntaxException e)
+
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.out.println(p_file.getPath());
+
+		filepath = "consult('" + p_file.getAbsolutePath() + "')";
+		isConnected = new Query(filepath.replaceAll("\\\\", "/")).hasSolution();
 
 		frame = new JFrame();
 
@@ -218,16 +243,7 @@ public class Window {
 		button_holder.setLayout(new BorderLayout(0, 0));
 		button_holder.setOpaque(false);
 
-		String path = System.getProperty("user.dir") + "\\images\\".replaceAll("\\\\", "/");
-		BufferedImage img = null;
-		try {
-			img = ImageIO.read(new File(path + "closebtnm.png"));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		JButton close_btn = new JButton("", new ImageIcon(img)) {
+		JButton close_btn = new JButton("", new ImageIcon(this.getClass().getResource("/icons/closebtnm.png"))) {
 			/**
 			 * 
 			 */
@@ -250,13 +266,7 @@ public class Window {
 			}
 		});
 
-		try {
-			img = ImageIO.read(new File(path + "minbtn.png"));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		JButton min_btn = new JButton("", new ImageIcon(img));
+		JButton min_btn = new JButton("", new ImageIcon(this.getClass().getResource("/icons/minbtn.png")));
 		min_btn.setOpaque(false);
 		min_btn.setContentAreaFilled(false);
 		min_btn.setBorderPainted(false);
@@ -293,7 +303,7 @@ public class Window {
 		letter_selection_dropdown.setForeground(whtColor);
 
 		for (Component component : letter_selection_dropdown.getComponents()) {
-			System.out.println(component.getClass());
+
 			if (component instanceof AbstractButton) {
 				letter_selection_dropdown.remove(component);
 			}
@@ -342,7 +352,7 @@ public class Window {
 		currency_selection_dropdown.setRenderer(new CustomJcomboBoxRenderer());
 		currency_selection_dropdown.setEditor(new MyComboBoxEditor());
 		for (Component component : currency_selection_dropdown.getComponents()) {
-			System.out.println(component.getClass());
+
 			if (component instanceof AbstractButton) {
 
 				currency_selection_dropdown.remove(component);
@@ -746,7 +756,7 @@ public class Window {
 		devolopingstate_selection_dropdown.setRenderer(new CustomJcomboBoxRenderer());
 		devolopingstate_selection_dropdown.setEditor(new MyComboBoxEditor());
 		for (Component component : devolopingstate_selection_dropdown.getComponents()) {
-			System.out.println(component.getClass());
+
 			if (component instanceof AbstractButton) {
 
 				devolopingstate_selection_dropdown.remove(component);

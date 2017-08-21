@@ -7,12 +7,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -34,7 +30,7 @@ public class CustomList {
 	private ArrayList<Model> list;
 	private JButton button;
 	private String path = System.getProperty("user.dir") + "\\images\\";
-	private BufferedImage img = null;
+	
 	private int xm, ym;
 
 	public CustomList(@SuppressWarnings("rawtypes") Hashtable[] solution, JButton button) {
@@ -47,7 +43,6 @@ public class CustomList {
 		}else
 			frame.setBounds(530, 200, 415, 350);
 
-		
 		
 
 		frame.setUndecorated(true);
@@ -111,7 +106,7 @@ public class CustomList {
 				}
 			});
 
-			JLabel imageContainer = new JLabel(new ImageIcon(h.getIcon()));
+			JLabel imageContainer = new JLabel(h.getIcon());
 			imageContainer.setBorder(new EmptyBorder(25, 20, 25, 0));
 			image_text_container.add(imageContainer, BorderLayout.WEST);
 
@@ -140,13 +135,8 @@ public class CustomList {
 		header.setLayout(new BorderLayout(0, 0));
 		header.setBackground(Color.decode("#3C3F41"));
 		//3C3F41
-		try {
-			img = ImageIO.read(new File(path + "closebtn.png"));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		JButton closebtn = new JButton("", new ImageIcon(img));
+		
+		JButton closebtn = new JButton("", new ImageIcon(this.getClass().getResource("/icons/closebtn.png")));
 
 		closebtn.addActionListener(new ActionListener() {
 
@@ -187,8 +177,6 @@ public class CustomList {
 		});
 
 		frame.getContentPane().add(header, BorderLayout.NORTH);
-		// JScrollBar sb = scrollPane.getVerticalScrollBar();
-		// sb.setUI(new MyScrollbarUI());
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 
 	}
